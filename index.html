@@ -33,6 +33,10 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
   border-radius:6px;transition:color 0.15s;user-select:none;
 }
 .option-btn:hover{color:var(--text)}
+.header-sep{font-size:11px;color:var(--dim);flex-shrink:0}
+.header-name{font-size:11px;color:var(--sel);white-space:nowrap;max-width:80px;overflow:hidden;text-overflow:ellipsis}
+.header-motto{font-size:10px;color:var(--dim);white-space:nowrap;max-width:140px;overflow:hidden;text-overflow:ellipsis}
+.header-left{display:flex;align-items:center;gap:6px;flex:1;min-width:0;overflow:hidden}
 
 /* ── MAIN ── */
 .main{display:flex;flex:1;min-height:0;overflow:hidden}
@@ -72,26 +76,29 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 .goal-detail input{background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--dim);font-size:13px;font-family:Arial,sans-serif;width:100%;outline:none;padding:3px 0}
 
 /* ── TODAY PANEL ── */
-.today-panel{flex-shrink:0;border-top:1px solid var(--line);background:var(--bg);overflow:hidden;transition:height 0.25s ease}
-.today-panel.collapsed{height:34px}
-.today-panel.expanded{height:200px}
+.today-panel{flex-shrink:0;border-top:1px solid var(--line);background:var(--bg);height:34px}
 .today-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;cursor:pointer;user-select:none;height:34px}
 .today-toggle-left{display:flex;align-items:center;gap:10px}
 .today-label{font-size:11px;color:var(--dim);letter-spacing:0.5px}
 .today-date{font-size:11px;color:var(--sel)}
-.today-arrow{font-size:10px;color:var(--dim);transition:transform 0.2s}
-.today-panel.expanded .today-arrow{transform:rotate(180deg)}
-.today-content{overflow-y:auto;height:166px;padding:0 14px 10px;scrollbar-width:none;display:flex;gap:16px}
-.today-content::-webkit-scrollbar{display:none}
-.today-section{flex:1;min-width:0}
-.today-section-label{font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:5px}
-.today-goal-item{display:flex;align-items:center;gap:7px;margin-bottom:5px}
-.today-check{width:10px;height:10px;border:1px solid var(--dim);border-radius:2px;flex-shrink:0;position:relative;cursor:pointer;transition:all 0.15s}
+.today-arrow{font-size:10px;color:var(--dim)}
+.today-overlay{display:none;position:fixed;inset:0;z-index:120;background:var(--bg);flex-direction:column}
+.today-overlay.open{display:flex}
+.today-overlay-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);flex-shrink:0}
+.today-overlay-title{font-size:14px;color:var(--text)}
+.today-overlay-date{font-size:11px;color:var(--sel)}
+.today-close{font-size:20px;color:var(--dim);cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center}
+.today-overlay-body{flex:1;overflow-y:auto;padding:20px 16px;scrollbar-width:none;display:flex;flex-direction:column;gap:24px}
+.today-overlay-body::-webkit-scrollbar{display:none}
+.today-section{}
+.today-section-label{font-size:10px;color:var(--dim);letter-spacing:1px;margin-bottom:8px}
+.today-goal-item{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+.today-check{width:12px;height:12px;border:1px solid var(--dim);border-radius:2px;flex-shrink:0;position:relative;cursor:pointer;transition:all 0.15s}
 .today-check.done{background:var(--sel);border-color:var(--sel)}
-.today-check.done::after{content:'';position:absolute;left:1.5px;top:-1px;width:4px;height:7px;border-right:1.5px solid #222;border-bottom:1.5px solid #222;transform:rotate(45deg)}
-.today-goal-name{font-size:12px;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.today-check.done::after{content:'';position:absolute;left:2px;top:-1px;width:5px;height:8px;border-right:1.5px solid #222;border-bottom:1.5px solid #222;transform:rotate(45deg)}
+.today-goal-name{font-size:14px;color:var(--text);overflow:hidden;text-overflow:ellipsis}
 .today-goal-name.done{color:var(--dim);text-decoration:line-through}
-.today-empty{font-size:12px;color:var(--dim)}
+.today-empty{font-size:13px;color:var(--dim)}
 
 /* ── OVERLAYS BASE ── */
 .overlay{display:none;position:fixed;inset:0;z-index:100;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);background:rgba(34,34,34,0.75)}
@@ -100,13 +107,13 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 /* ── YEAR OVERLAY ── */
 .year-overlay{display:none;position:fixed;inset:0;z-index:100;backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);background:rgba(34,34,34,0.8);align-items:center;justify-content:center;flex-direction:column}
 .year-overlay.open{display:flex}
-.year-strip-wrap{width:100%;overflow:hidden}
-.year-strip{display:flex;align-items:baseline;gap:40px;overflow-x:auto;padding:20px 50vw;scrollbar-width:none;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch}
-.year-strip::-webkit-scrollbar{display:none}
-.year-opt{font-size:22px;color:var(--dim);cursor:pointer;white-space:nowrap;transition:color 0.15s,font-size 0.15s;scroll-snap-align:center;flex-shrink:0}
-.year-opt.center-year{color:var(--text);font-size:36px}
-.year-opt.near-year{color:#888;font-size:26px}
-.year-opt.active{color:var(--sel)}
+.year-picker{display:flex;align-items:center;gap:0;user-select:none}
+.year-picker-ellipsis{font-size:20px;color:var(--dim);padding:0 20px;letter-spacing:3px}
+.year-opt{font-size:24px;color:var(--dim);cursor:pointer;padding:0 20px;white-space:nowrap;transition:color 0.15s,font-size 0.15s}
+.year-opt.active{color:var(--sel);font-size:44px;font-weight:300}
+.year-opt.near{color:var(--text);font-size:28px}
+.year-nav-btn{background:none;border:none;color:var(--dim);font-size:22px;cursor:pointer;padding:0 12px;transition:color 0.15s}
+.year-nav-btn:hover{color:var(--text)}
 .overlay-close{margin-top:28px;font-size:11px;color:var(--dim);cursor:pointer;letter-spacing:1px}
 
 /* ── ADD OVERLAY ── */
@@ -188,8 +195,9 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 .color-custom-input{
   background:transparent;border:none;border-bottom:1px solid var(--line);
   color:var(--text);font-size:13px;font-family:Arial,sans-serif;
-  outline:none;padding:4px 0;width:100px;
+  outline:none;padding:4px 0;width:90px;
 }
+.color-preview{width:22px;height:22px;border-radius:50%;border:1px solid var(--line);flex-shrink:0;transition:background 0.2s}
 
 /* ── CALENDAR PAGE ── */
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:0;padding:0 0 12px 0;flex-shrink:0}
@@ -263,11 +271,11 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
-  <div class="login-title">Planner</div>
-  <div class="login-sub">Login with Google Account<br>Start your productive life</div>
+  <div class="login-title">ETT Planner</div>
+  <div class="login-sub">Start your productive life<br>to login with Google</div>
   <button class="login-btn" id="loginBtn">
     <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-    Login With Google
+    Login with Google
   </button>
 </div>
 
@@ -279,6 +287,9 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     <div class="header-left">
       <span class="year-btn" id="yearDisplay"></span>
       <span class="year-change" id="yearChangeBtn">· change</span>
+      <span class="header-sep">·</span>
+      <span class="header-name" id="headerName"></span>
+      <span class="header-goal" id="headerGoal"></span>
     </div>
     <div class="option-btn" id="optionBtn">⋯</div>
   </div>
@@ -287,7 +298,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
   <div class="option-menu" id="optionMenu">
     <div class="option-item" id="optAccountBtn">
       Account
-      <div class="opt-sub" id="optAccountSub">Name · Motto · Logout</div>
+      <div class="opt-sub" id="optAccountSub">Account Setting</div>
     </div>
     <div class="option-item" id="optColorBtn">
       Color
@@ -295,7 +306,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     </div>
     <div class="option-item" id="optCalBtn">
       Calendar
-      <div class="opt-sub">overeview</div>
+      <div class="opt-sub">Overeview</div>
     </div>
   </div>
 
@@ -309,8 +320,8 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     </div>
   </div>
 
-  <!-- TODAY PANEL -->
-  <div class="today-panel collapsed" id="todayPanel">
+  <!-- TODAY BAR -->
+  <div class="today-panel" id="todayPanel">
     <div class="today-toggle" id="todayToggle">
       <div class="today-toggle-left">
         <span class="today-label">TODAY</span>
@@ -318,13 +329,24 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
       </div>
       <span class="today-arrow">▲</span>
     </div>
-    <div class="today-content" id="todayContent"></div>
   </div>
+</div>
+
+<!-- TODAY OVERLAY -->
+<div class="today-overlay" id="todayOverlay">
+  <div class="today-overlay-header">
+    <div>
+      <div class="today-overlay-title">TODAY</div>
+      <div class="today-overlay-date" id="todayOverlayDate"></div>
+    </div>
+    <div class="today-close" id="todayClose">✕</div>
+  </div>
+  <div class="today-overlay-body" id="todayContent"></div>
 </div>
 
 <!-- YEAR OVERLAY -->
 <div class="year-overlay" id="yearOverlay">
-  <div class="year-strip-wrap"><div class="year-strip" id="yearStrip"></div></div>
+  <div class="year-picker" id="yearPicker"></div>
   <div class="overlay-close" id="yearOverlayClose">esc</div>
 </div>
 
@@ -332,7 +354,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 <div class="add-overlay" id="addOverlay">
   <div class="add-box" id="addBox">
     <div class="add-lbl" id="addLbl"></div>
-    <input class="add-input" id="addInput" placeholder="goal title..." autocomplete="off"/>
+    <input class="add-input" id="addInput" placeholder="write your goal ..." autocomplete="off"/>
     <div class="add-btns">
       <button id="addCancelBtn">cancel</button>
       <button class="ok" id="addConfirmBtn">add</button>
@@ -347,13 +369,13 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     <span class="side-close" id="accountClose">✕</span>
   </div>
   <div class="side-body">
-    <div class="account-avatar" id="accountAvatar">:)</div>
+    <div class="account-avatar" id="accountAvatar">?</div>
     <div class="account-field">
       <div class="account-label">Name</div>
       <input class="account-input" id="accountName" placeholder="Write your name" autocomplete="off"/>
     </div>
     <div class="account-field">
-      <div class="account-label">Life's Goal</div>
+      <div class="account-label">Life's goal</div>
       <input class="account-input" id="accountMotto" placeholder="Write your life's goal" autocomplete="off"/>
     </div>
     <button class="logout-btn" id="accountLogout">Logout</button>
@@ -372,6 +394,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     <div class="color-custom-row">
       <span class="color-custom-label">Custom</span>
       <input class="color-custom-input" id="colorCustomInput" placeholder="#e5b8d3" maxlength="7"/>
+      <div class="color-preview" id="colorPreview"></div>
     </div>
   </div>
 </div>
@@ -478,7 +501,7 @@ function getWeekOfDay(y, m, d) {
 function isToday(m, d) { return year===NOW.getFullYear()&&m===NOW.getMonth()&&d===NOW.getDate(); }
 function parseTags(detail) {
   if (!detail) return [];
-  return (detail.match(/#\w+/g) || []);
+  return (detail.match(/#[\w\uAC00-\uD7AF\u1100-\u11FF\u3130-\u318F]+/g) || []);
 }
 function applyColor(hex) {
   document.documentElement.style.setProperty('--sel', hex);
@@ -630,7 +653,7 @@ function renderGoals() {
     detail.className = 'goal-detail' + (g.open ? ' open' : '');
     const detailInput = document.createElement('input');
     detailInput.value = g.detail || '';
-    detailInput.placeholder = 'detail... (#tag 으로 태그 추가)';
+    detailInput.placeholder = 'Goal detail... ("#tag" to add tag)';
     detailInput.addEventListener('change', e => saveDetail(i, e.target.value));
     detailInput.addEventListener('click', e => e.stopPropagation());
     detail.appendChild(detailInput);
@@ -669,39 +692,41 @@ function confirmAdd() {
 }
 
 // ── YEAR OVERLAY ───────────────────────────────────────
+function renderYearPicker() {
+  const picker = document.getElementById('yearPicker');
+  picker.innerHTML = '';
+  // 이전 버튼
+  const prev = document.createElement('button');
+  prev.className = 'year-nav-btn'; prev.textContent = '‹';
+  prev.onclick = () => { year--; renderYearPicker(); document.getElementById('yearDisplay').textContent = year; openMonth=-1;openWeek=-1;sel=null;renderTree();renderGoals(); };
+  picker.appendChild(prev);
+  // ... 이전
+  const el1 = document.createElement('span'); el1.className='year-picker-ellipsis'; el1.textContent='…'; picker.appendChild(el1);
+  // 이전 연도
+  const yPrev = document.createElement('div');
+  yPrev.className = 'year-opt near'; yPrev.textContent = year-1;
+  yPrev.onclick = () => { year=year-1; renderYearPicker(); document.getElementById('yearDisplay').textContent=year; openMonth=-1;openWeek=-1;sel=null;renderTree();renderGoals(); };
+  picker.appendChild(yPrev);
+  // 현재 연도
+  const yCur = document.createElement('div');
+  yCur.className = 'year-opt active'; yCur.textContent = year;
+  picker.appendChild(yCur);
+  // 다음 연도
+  const yNext = document.createElement('div');
+  yNext.className = 'year-opt near'; yNext.textContent = year+1;
+  yNext.onclick = () => { year=year+1; renderYearPicker(); document.getElementById('yearDisplay').textContent=year; openMonth=-1;openWeek=-1;sel=null;renderTree();renderGoals(); };
+  picker.appendChild(yNext);
+  // ... 다음
+  const el2 = document.createElement('span'); el2.className='year-picker-ellipsis'; el2.textContent='…'; picker.appendChild(el2);
+  // 다음 버튼
+  const next = document.createElement('button');
+  next.className = 'year-nav-btn'; next.textContent = '›';
+  next.onclick = () => { year++; renderYearPicker(); document.getElementById('yearDisplay').textContent=year; openMonth=-1;openWeek=-1;sel=null;renderTree();renderGoals(); };
+  picker.appendChild(next);
+}
 function openYearOverlay() {
-  const strip = document.getElementById('yearStrip');
-  strip.innerHTML = '';
-  const cur = NOW.getFullYear();
-  const years = [];
-  for (let y = cur-5; y <= cur+10; y++) {
-    const el = document.createElement('div');
-    el.className = 'year-opt' + (y === year ? ' active' : '');
-    el.textContent = y; el.dataset.y = y;
-    el.onclick = () => {
-      year = y;
-      document.getElementById('yearDisplay').textContent = y;
-      openMonth = -1; openWeek = -1; sel = null;
-      renderTree(); renderGoals(); closeYearOverlay();
-    };
-    strip.appendChild(el); years.push(el);
-  }
+  renderYearPicker();
   document.getElementById('yearOverlay').classList.add('open');
-  function updateSizes() {
-    const cx = strip.getBoundingClientRect().left + strip.offsetWidth / 2;
-    years.forEach(el => {
-      const dist = Math.abs(el.getBoundingClientRect().left + el.offsetWidth/2 - cx);
-      el.classList.remove('center-year','near-year');
-      if (dist < 40) el.classList.add('center-year');
-      else if (dist < 100) el.classList.add('near-year');
-    });
-  }
-  strip.addEventListener('scroll', updateSizes);
-  setTimeout(() => {
-    const active = strip.querySelector('.active') || strip.querySelector(`[data-y="${cur}"]`);
-    if (active) strip.scrollLeft = active.offsetLeft + active.offsetWidth/2 - strip.offsetWidth/2;
-    updateSizes();
-  }, 60);
 }
 function closeYearOverlay() { document.getElementById('yearOverlay').classList.remove('open'); }
 
@@ -712,14 +737,16 @@ function getTodayKeys() {
   return { day:`Y${y}M${m}W${wi}D${d}`, week:`Y${y}M${m}W${wi}`, month:`Y${y}M${m}` };
 }
 function renderTodayPanel() {
+  const dateStr = `${NOW.getFullYear()} · ${MO[NOW.getMonth()]} · ${NOW.getDate()} (${DA[NOW.getDay()]})`;
+  document.getElementById('todayDateLabel').textContent = dateStr;
+  document.getElementById('todayOverlayDate').textContent = dateStr;
+
   const content = document.getElementById('todayContent');
-  const dateLabel = document.getElementById('todayDateLabel');
-  dateLabel.textContent = `${NOW.getFullYear()} · ${MO[NOW.getMonth()]} · ${NOW.getDate()} (${DA[NOW.getDay()]})`;
   const keys = getTodayKeys();
   const sections = [
     { label:'TODAY', key:keys.day },
-    { label:'WEEK',  key:keys.week },
-    { label:'MONTH', key:keys.month },
+    { label:'THIS WEEK', key:keys.week },
+    { label:'THIS MONTH', key:keys.month },
   ];
   content.innerHTML = '';
   sections.forEach(({ label, key }) => {
@@ -773,20 +800,27 @@ document.addEventListener('click', e => {
 function openAccountPage() {
   closeOption();
   const name = _meta.name || '';
-  const motto = _meta.motto || '';
+  const goal = _meta.goal || '';
   document.getElementById('accountName').value = name;
-  document.getElementById('accountMotto').value = motto;
+  document.getElementById('accountGoal').value = goal;
   document.getElementById('accountAvatar').textContent = name ? name[0].toUpperCase() : '?';
   document.getElementById('accountPage').classList.add('open');
 }
 function closeAccountPage() {
-  // save on close
   _meta.name = document.getElementById('accountName').value.trim();
-  _meta.motto = document.getElementById('accountMotto').value.trim();
+  _meta.goal = document.getElementById('accountGoal').value.trim();
   persistAll();
   const n = _meta.name;
   document.getElementById('accountAvatar').textContent = n ? n[0].toUpperCase() : '?';
+  updateHeaderMeta();
   document.getElementById('accountPage').classList.remove('open');
+}
+function updateHeaderMeta() {
+  const nameEl = document.getElementById('headerName');
+  const mottoEl = document.getElementById('headerMotto');
+  const sepEl = document.getElementById('headerSep');
+  if (_meta.name) { nameEl.textContent = _meta.name; nameEl.style.display=''; } else { nameEl.textContent=''; nameEl.style.display='none'; }
+  if (_meta.motto) { mottoEl.textContent = '· ' + _meta.motto; mottoEl.style.display=''; } else { mottoEl.textContent=''; mottoEl.style.display='none'; }
 }
 
 // ── COLOR PAGE ─────────────────────────────────────────
@@ -811,14 +845,22 @@ function openColorPage() {
     swatches.appendChild(sw);
   });
   document.getElementById('colorCustomInput').value = current;
+  document.getElementById('colorPreview').style.background = current;
   document.getElementById('colorPage').classList.add('open');
 }
 function closeColorPage() { document.getElementById('colorPage').classList.remove('open'); }
+document.getElementById('colorCustomInput').addEventListener('input', e => {
+  const v = e.target.value.trim();
+  if (/^#[0-9a-fA-F]{6}$/.test(v)) {
+    document.getElementById('colorPreview').style.background = v;
+  }
+});
 document.getElementById('colorCustomInput').addEventListener('change', e => {
   const v = e.target.value.trim();
   if (/^#[0-9a-fA-F]{6}$/.test(v)) {
     applyColor(v); _meta.selColor = v; persistAll();
     document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active'));
+    document.getElementById('colorPreview').style.background = v;
   }
 });
 
@@ -957,11 +999,11 @@ document.getElementById('calNext').addEventListener('click', () => {
 });
 
 document.getElementById('todayToggle').addEventListener('click', () => {
-  todayExpanded = !todayExpanded;
-  const p = document.getElementById('todayPanel');
-  p.classList.toggle('collapsed', !todayExpanded);
-  p.classList.toggle('expanded', todayExpanded);
-  if (todayExpanded) renderTodayPanel();
+  renderTodayPanel();
+  document.getElementById('todayOverlay').classList.add('open');
+});
+document.getElementById('todayClose').addEventListener('click', () => {
+  document.getElementById('todayOverlay').classList.remove('open');
 });
 
 // ── AUTH ───────────────────────────────────────────────
@@ -976,6 +1018,7 @@ onAuthStateChanged(auth, async (user) => {
     // Update option sub with account name
     if (_meta.name) document.getElementById('optAccountSub').textContent = _meta.name;
     document.getElementById('yearDisplay').textContent = year;
+    updateHeaderMeta();
     openMonth = -1; openWeek = -1; sel = null;
     renderTree(); renderGoals(); renderTodayPanel();
   } else {
