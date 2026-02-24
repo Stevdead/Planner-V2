@@ -75,13 +75,14 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 .goal-detail.open{display:block}
 .goal-detail input{background:transparent;border:none;border-bottom:1px solid var(--line);color:var(--dim);font-size:13px;font-family:Arial,sans-serif;width:100%;outline:none;padding:3px 0}
 
-/* ── TODAY PANEL ── */
+/* ── TODAY PANEL (바텀 바 + 전체화면) ── */
 .today-panel{flex-shrink:0;border-top:1px solid var(--line);background:var(--bg);height:34px}
 .today-toggle{display:flex;align-items:center;justify-content:space-between;padding:7px 14px;cursor:pointer;user-select:none;height:34px}
 .today-toggle-left{display:flex;align-items:center;gap:10px}
 .today-label{font-size:11px;color:var(--dim);letter-spacing:0.5px}
 .today-date{font-size:11px;color:var(--sel)}
 .today-arrow{font-size:10px;color:var(--dim)}
+/* 전체화면 today 오버레이 */
 .today-overlay{display:none;position:fixed;inset:0;z-index:120;background:var(--bg);flex-direction:column}
 .today-overlay.open{display:flex}
 .today-overlay-header{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);flex-shrink:0}
@@ -271,8 +272,8 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 
 <!-- LOGIN -->
 <div class="login-screen" id="loginScreen">
-  <div class="login-title">ETT Planner</div>
-  <div class="login-sub">Start your productive life<br>to login with Google</div>
+  <div class="login-title">ETTP</div>
+  <div class="login-sub">Start your <br>Productive life</div>
   <button class="login-btn" id="loginBtn">
     <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
     Login with Google
@@ -289,7 +290,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
       <span class="year-change" id="yearChangeBtn">· change</span>
       <span class="header-sep">·</span>
       <span class="header-name" id="headerName"></span>
-      <span class="header-goal" id="headerGoal"></span>
+      <span class="header-motto" id="headerMotto"></span>
     </div>
     <div class="option-btn" id="optionBtn">⋯</div>
   </div>
@@ -302,7 +303,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     </div>
     <div class="option-item" id="optColorBtn">
       Color
-      <div class="opt-sub">Change Color</div>
+      <div class="opt-sub">Color Changer</div>
     </div>
     <div class="option-item" id="optCalBtn">
       Calendar
@@ -332,7 +333,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
   </div>
 </div>
 
-<!-- TODAY OVERLAY -->
+<!-- TODAY OVERLAY (전체화면) -->
 <div class="today-overlay" id="todayOverlay">
   <div class="today-overlay-header">
     <div>
@@ -354,7 +355,7 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
 <div class="add-overlay" id="addOverlay">
   <div class="add-box" id="addBox">
     <div class="add-lbl" id="addLbl"></div>
-    <input class="add-input" id="addInput" placeholder="write your goal ..." autocomplete="off"/>
+    <input class="add-input" id="addInput" placeholder="goal title..." autocomplete="off"/>
     <div class="add-btns">
       <button id="addCancelBtn">cancel</button>
       <button class="ok" id="addConfirmBtn">add</button>
@@ -372,13 +373,13 @@ html,body{background:var(--bg);color:var(--text);font-family:Arial,sans-serif;fo
     <div class="account-avatar" id="accountAvatar">?</div>
     <div class="account-field">
       <div class="account-label">Name</div>
-      <input class="account-input" id="accountName" placeholder="Write your name" autocomplete="off"/>
+      <input class="account-input" id="accountName" placeholder="write your name" autocomplete="off"/>
     </div>
     <div class="account-field">
-      <div class="account-label">Life's goal</div>
-      <input class="account-input" id="accountMotto" placeholder="Write your life's goal" autocomplete="off"/>
+      <div class="account-label">Life's Goal</div>
+      <input class="account-input" id="accountMotto" placeholder="write your life's goal" autocomplete="off"/>
     </div>
-    <button class="logout-btn" id="accountLogout">Logout</button>
+    <button class="logout-btn" id="accountLogout">logout</button>
   </div>
 </div>
 
@@ -653,7 +654,7 @@ function renderGoals() {
     detail.className = 'goal-detail' + (g.open ? ' open' : '');
     const detailInput = document.createElement('input');
     detailInput.value = g.detail || '';
-    detailInput.placeholder = 'Goal detail... ("#tag" to add tag)';
+    detailInput.placeholder = 'description... (#tag to add tag)';
     detailInput.addEventListener('change', e => saveDetail(i, e.target.value));
     detailInput.addEventListener('click', e => e.stopPropagation());
     detail.appendChild(detailInput);
@@ -800,15 +801,15 @@ document.addEventListener('click', e => {
 function openAccountPage() {
   closeOption();
   const name = _meta.name || '';
-  const goal = _meta.goal || '';
+  const motto = _meta.motto || '';
   document.getElementById('accountName').value = name;
-  document.getElementById('accountGoal').value = goal;
+  document.getElementById('accountMotto').value = motto;
   document.getElementById('accountAvatar').textContent = name ? name[0].toUpperCase() : '?';
   document.getElementById('accountPage').classList.add('open');
 }
 function closeAccountPage() {
   _meta.name = document.getElementById('accountName').value.trim();
-  _meta.goal = document.getElementById('accountGoal').value.trim();
+  _meta.motto = document.getElementById('accountMotto').value.trim();
   persistAll();
   const n = _meta.name;
   document.getElementById('accountAvatar').textContent = n ? n[0].toUpperCase() : '?';
